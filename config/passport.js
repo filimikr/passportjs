@@ -11,6 +11,7 @@ const users = require('./users')
 const keys = require('./keys') //Import keys for auth APIs (Google etc)
 const GoogleStrategy = require('passport-google-oauth20').Strategy //add google strategy
 const FacebookStrategy = require('passport-facebook').Strategy //add facebook strategy
+const TwitterStrategy = require('passport-twitter').Strategy //add twitter strategy
 
 //Serialize User for processing them after Google oauth
 
@@ -57,6 +58,29 @@ passport.use(
     callbackURL: '/auth/facebook/callback',
     profileFields: ['id', 'email', 'displayName']
   }, (accessToken, refreshToken, profile, done) => {
+    // passport callback function
+    console.log('passport callback function fired:')
+    console.log(profile)
+
+    const user = users.findByUsername(profile.id)
+    if (user) { //if user exists already
+      return done(null, user)
+    } else { //if not, save user
+      users.saveUser(profile.id, profile.emails[0].value, profile.displayName)
+      console.log('Users: ', users.users)
+      return done(null, user)
+    }
+  })
+)
+
+passport.use(
+  new TwitterStrategy({
+    //options for twitter strategy
+    consumerKey: keys.twitter.consumerKey,
+    consumerSecret: keys.twitter.consumerSecret,
+    callbackURL: '/auth/twitter/callback',
+    profileFields: ['id', 'email', 'displayName']
+  }, (token, tokenSecret, profile, done) => {
     // passport callback function
     console.log('passport callback function fired:')
     console.log(profile)
