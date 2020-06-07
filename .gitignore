@@ -1,7 +1,7 @@
 keys/
 tls/
 #keys 
-/config/keys.js
+config/keys.js
 
 # Logs
 logs
