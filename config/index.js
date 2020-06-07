@@ -11,7 +11,7 @@ module.exports = {
     sameSite: true
   },
   tlsServer: {
-    certificate: path.join(__dirname, '..', 'keys', 'cert.pem'),
-    privateKey: path.join(__dirname, '..', 'keys', 'privkey.pem')
+    certificate: path.join(__dirname, '..', 'tls', 'jwtserver.crt.pem'),
+    privateKey: path.join(__dirname, '..', 'tls', 'jwtserver.key.pem')
   }
 }

@@ -1,4 +1,7 @@
 keys/
+tls/
+#keys 
+/config/keys.js
 
 # Logs
 logs

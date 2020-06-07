@@ -1,8 +1,7 @@
 'use strict'
 
 const users = [
-  { username: 'alice', password: '$2b$13$a.6oKzhpbGcWmrQpV1U42Oc2e6H2/Zb9O3txkSVg7//k9COWjMn0i', email: 'alice@domain', name: 'Alice Inchains' }, // password: hello1234
-  { username: 'bob', password: '$2b$13$uqZ8Wdg0IRRn3zbLHf.UguaAcX1ixrfbNvHN5Q.tTuxxgxJ7QMpkK', email: 'bob@foo', name: 'Silent Bob' } // password: qwerty
+  { username: 'filippos', password: '$2b$13$ELm0Aq4eGYC/nQnTjF0ruOvOBAd4xpLb6/jJccMqNyyGVlfsuD4h2', email: 'mikropoulosf@gmail.com', name: 'Filippos Mikropoulos' } // password: iLikeBarcelona231!
 ]
 
 const findByUsername = function (username) {
@@ -15,7 +14,17 @@ const findByUsername = function (username) {
   return null
 }
 
+const saveUser = function (username, email, name) {
+  users.push({
+    'username':username,
+    'email':email,
+    'name':name
+  })
+
+}
+
 module.exports = {
   users,
-  findByUsername
+  findByUsername,
+  saveUser
 }

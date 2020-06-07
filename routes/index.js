@@ -58,6 +58,21 @@ router.post('/auth/local/login', passport.authenticate('local', { session: false
   }
 )
 
+//AUTH WITH GOOGLE
+router.get('/auth/google', passport.authenticate('google', {
+  scope: ['profile', 'email']
+}))
+
+ //callback route for google to redirect to
+router.get('/auth/google/redirect', passport.authenticate('google'), (req, res) => {
+  res.send('komple')
+  }
+)
+
+
+//end AUTH LOGIN WITH GOOGLE
+
+
 function _createJwt (user) {
   /** This is what ends up in our JWT */
   const jwtClaims = {
