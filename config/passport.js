@@ -76,7 +76,7 @@ passport.use(
 
 passport.use(
   new GithubStrategy({
-    //options for facebook strategy
+    //options for github strategy
     clientID: keys.github.clientID,
     clientSecret: keys.github.clientSecret,
     callbackURL: '/auth/github/callback',
