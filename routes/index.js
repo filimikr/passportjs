@@ -78,8 +78,30 @@ router.get('/auth/google/redirect', passport.authenticate('google'), (req, res) 
 <p>Please proceed to the <a href="../../fortune">fortune-teller server</a></p>`)
   }
 )
-
 //end AUTH LOGIN WITH GOOGLE
+
+//FACEBOOK LOGIN
+
+router.get('/auth/facebook', passport.authenticate('facebook', {
+  authType: 'rerequest',
+  scope: ['email']
+}))
+
+router.get('/auth/facebook/callback', passport.authenticate('facebook'), (req, res) => {
+  const token = _createJwt(req.user)
+  /** assign our jwt to the cookie */
+  res.cookie('jwt', token, config.cookieOptions)
+  /** Report success and allow the user to visit the intranet */
+  res.send(`
+<h3>Login succeeded with Facebook passport Strategy!</h3>
+<p>Now you have a valid JWT that can be used to access the fortune-teller server.</p>
+<p>If you check your cookies, you will see that you have one called jwt with your JWT</p>
+<p>Your <strong>JWT</strong> is:</p>
+<a href="https://jwt.io/?token=${token}" target="_blank"><pre>${token}</pre></a>
+<p>Please proceed to the <a href="../../fortune">fortune-teller server</a></p>`)
+})
+
+//END FACEBOOK LOGIN
 
 function _createJwt (user) {
   /** This is what ends up in our JWT */
