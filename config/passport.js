@@ -11,22 +11,6 @@ const users = require('./users')
 const keys = require('./keys') //Import keys for auth APIs (Google etc)
 const GoogleStrategy = require('passport-google-oauth20').Strategy //add google strategy
 
-// passport.use(new GoogleStrategy({
-// 		// options for the google strategy
-// 		callbackURL:'/auth/google/redirect',
-// 		clientID: keys.google.clientID,
-// 		clientSecret: keys.google.clientSecret
-// 	},
-//   function(accessToken, refreshToken, profile, cb) {
-// 		//passport callback function
-//     console.log('ftanei edo')
-//     console.log(accessToken)
-//     console.log(refreshToken)
-//     console.log(profile)
-//     console.log(cb)
-// 	})
-// )
-
 //Serialize User for processing them after Google oauth
 
 passport.serializeUser((user, done) => {
@@ -34,45 +18,37 @@ passport.serializeUser((user, done) => {
 })
 
 passport.deserializeUser((username, done) => {
-  const user = users.findByUsername(username) 
-  if (username = user.username) {
+  let user = users.findByUsername(username)
+  if (user = user.username) {
     done(null, user)
-  } 
-
-  // => {
-  //   done(null, user)
-  // }
-  done(null, user.username)
+  }
 })
-
-
 
 //end Serialize user
 
 passport.use(
-    new GoogleStrategy({
-        // options for google strategy
-        clientID: keys.google.clientID,
-        clientSecret: keys.google.clientSecret,
-        callbackURL: '/auth/google/redirect'
-    }, (accessToken, refreshToken, profile, done) => {
-        // passport callback function
-        console.log('passport callback function fired:')
-        console.log(profile)
-        
-        const user = users.findByUsername(profile.id)
-        if (user) { //if users exists already
-          return done(null, user)
-        }
-        else { //if not, save user
-          users.saveUser(profile.id, profile.emails[0].value, profile.displayName)
-          console.log('Users: ', users.users)
-          return done(null, user)
-        }
-        return done(null, false)
+  new GoogleStrategy({
+    // options for google strategy
+    clientID: keys.google.clientID,
+    clientSecret: keys.google.clientSecret,
+    callbackURL: '/auth/google/redirect'
+  }, (accessToken, refreshToken, profile, done) => {
+    // passport callback function
+    console.log('passport callback function fired:')
+    console.log(profile)
 
-    })
-);
+    const user = users.findByUsername(profile.id)
+    if (user) { //if users exists already
+      return done(null, user)
+    } else { //if not, save user
+      users.saveUser(profile.id, profile.emails[0].value, profile.displayName)
+      console.log('Users: ', users.users)
+      return done(null, user)
+    }
+    return done(null, false)
+
+  })
+)
 
 /*
 Configure the local strategy for use by Passport.

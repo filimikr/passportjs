@@ -1,7 +1,12 @@
 'use strict'
 
 const users = [
-  { username: 'filippos', password: '$2b$13$ELm0Aq4eGYC/nQnTjF0ruOvOBAd4xpLb6/jJccMqNyyGVlfsuD4h2', email: 'mikropoulosf@gmail.com', name: 'Filippos Mikropoulos' } // password: iLikeBarcelona231!
+  {
+    username: 'filippos',
+    password: '$2b$13$ELm0Aq4eGYC/nQnTjF0ruOvOBAd4xpLb6/jJccMqNyyGVlfsuD4h2',
+    email: 'mikropoulosf@gmail.com',
+    name: 'Filippos Mikropoulos'
+  } // password: iLikeBarcelona231!
 ]
 
 const findByUsername = function (username) {
@@ -16,9 +21,9 @@ const findByUsername = function (username) {
 
 const saveUser = function (username, email, name) {
   users.push({
-    'username':username,
-    'email':email,
-    'name':name
+    'username': username,
+    'email': email,
+    'name': name
   })
 
 }
