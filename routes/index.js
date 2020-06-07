@@ -63,13 +63,13 @@ router.get('/auth/google', passport.authenticate('google', {
   scope: ['profile', 'email']
 }))
 
- //callback route for google to redirect to
+//callback route for google to redirect to
 router.get('/auth/google/redirect', passport.authenticate('google'), (req, res) => {
-  const token = _createJwt(req.user)
-  /** assign our jwt to the cookie */
-  res.cookie('jwt', token, config.cookieOptions)
-  /** Report success and allow the user to visit the intranet */
-  res.send(`
+    const token = _createJwt(req.user)
+    /** assign our jwt to the cookie */
+    res.cookie('jwt', token, config.cookieOptions)
+    /** Report success and allow the user to visit the intranet */
+    res.send(`
 <h3>Login succeeded with Google passport Strategy!</h3>
 <p>Now you have a valid JWT that can be used to access the fortune-teller server.</p>
 <p>If you check your cookies, you will see that you have one called jwt with your JWT</p>
@@ -78,13 +78,8 @@ router.get('/auth/google/redirect', passport.authenticate('google'), (req, res) 
 <p>Please proceed to the <a href="../../fortune">fortune-teller server</a></p>`)
   }
 )
-//
-// router.post('/auth/google/success', passport.authenticate('google'), (req, res) => {
-//
-//
-// })
-//end AUTH LOGIN WITH GOOGLE
 
+//end AUTH LOGIN WITH GOOGLE
 
 function _createJwt (user) {
   /** This is what ends up in our JWT */
