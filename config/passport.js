@@ -20,7 +20,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((username, done) => {
   let user = users.findByUsername(username)
-  if (user == user.username) {
+  if (user = user.username) {
     done(null, user)
   }
 })
