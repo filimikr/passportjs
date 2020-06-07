@@ -78,8 +78,20 @@ router.get('/auth/google/redirect', passport.authenticate('google'), (req, res) 
 <p>Please proceed to the <a href="../../fortune">fortune-teller server</a></p>`)
   }
 )
-
 //end AUTH LOGIN WITH GOOGLE
+
+//FACEBOOK LOGIN
+
+router.get('/auth/facebook', passport.authenticate('facebook', {
+  authType: 'rerequest',
+  scope: ['email']
+}))
+
+router.get('/auth/facebook/callback', passport.authenticate('facebook'), (req, res) => {
+  res.send('it comes back')
+})
+
+//END FACEBOOK LOGIN
 
 function _createJwt (user) {
   /** This is what ends up in our JWT */

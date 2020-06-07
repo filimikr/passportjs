@@ -5,7 +5,6 @@ const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 
 const passport = require('./config/passport')
-//const GoogleStrategy = require('passport-google-oauth20')
 
 const app = express()
 
