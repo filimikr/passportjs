@@ -109,11 +109,11 @@ passport.use(
     console.log('passport callback function fired:')
     console.log(profile)
 
-    const user = users.findByUsername(profile.username)
+    let user = users.findByUsername(profile.username)
     if (user) { //if user exists already
       return done(null, user)
     } else { //if not, save user
-      users.saveUser(profile.username, profile.email, profile.displayName)
+      user = users.saveUser(profile.username, (profile.emails && profile.emails[0].value) ? profile.emails[0].value : null, profile.displayName)
       console.log('Users: ', users.users)
       return done(null, user)
     }

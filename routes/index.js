@@ -143,7 +143,7 @@ router.get('/auth/github/callback', passport.authenticate('github'), (req, res) 
   res.cookie('jwt', token, config.cookieOptions)
   /** Report success and allow the user to visit the intranet */
   res.send(`
-<h3>Login succeeded with Facebook passport Strategy!</h3>
+<h3>Login succeeded with Github passport Strategy!</h3>
 <p>Now you have a valid JWT that can be used to access the fortune-teller server.</p>
 <p>If you check your cookies, you will see that you have one called jwt with your JWT</p>
 <p>Your <strong>JWT</strong> is:</p>
