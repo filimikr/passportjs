@@ -9,9 +9,11 @@ const config = require('.') // if not specified, a require gets the file index.j
 const users = require('./users')
 
 const keys = require('./keys') //Import keys for auth APIs (Google etc)
+
 const GoogleStrategy = require('passport-google-oauth20').Strategy //add google strategy
 const FacebookStrategy = require('passport-facebook').Strategy //add facebook strategy
 const TwitterStrategy = require('passport-twitter').Strategy //add twitter strategy
+const GithubStrategy = require('passport-github2').Strategy //add github strategy
 
 //Serialize User for processing them after Google oauth
 
@@ -90,6 +92,28 @@ passport.use(
       return done(null, user)
     } else { //if not, save user
       users.saveUser(profile.id, profile.emails[0].value, profile.displayName)
+      console.log('Users: ', users.users)
+      return done(null, user)
+    }
+  })
+)
+
+passport.use(
+  new GithubStrategy({
+    //options for github strategy
+    clientID: keys.github.clientID,
+    clientSecret: keys.github.clientSecret,
+    callbackURL: '/auth/github/callback',
+  }, (accessToken, refreshToken, profile, done) => {
+    // passport callback function
+    console.log('passport callback function fired:')
+    console.log(profile)
+
+    let user = users.findByUsername(profile.username)
+    if (user) { //if user exists already
+      return done(null, user)
+    } else { //if not, save user
+      user = users.saveUser(profile.username, (profile.emails && profile.emails[0].value) ? profile.emails[0].value : null, profile.displayName)
       console.log('Users: ', users.users)
       return done(null, user)
     }
