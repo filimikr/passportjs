@@ -12,6 +12,7 @@ const keys = require('./keys') //Import keys for auth APIs (Google etc)
 
 const GoogleStrategy = require('passport-google-oauth20').Strategy //add google strategy
 const FacebookStrategy = require('passport-facebook').Strategy //add facebook strategy
+const TwitterStrategy = require('passport-twitter').Strategy //add twitter strategy
 const GithubStrategy = require('passport-github2').Strategy //add github strategy
 
 //Serialize User for processing them after Google oauth
@@ -22,7 +23,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((username, done) => {
   let user = users.findByUsername(username)
-  if (user = user.username) {
+  if (user === user.username) {
     done(null, user)
   }
 })
@@ -37,14 +38,14 @@ passport.use(
     callbackURL: '/auth/google/redirect'
   }, (accessToken, refreshToken, profile, done) => {
     // passport callback function
-    console.log('passport callback function fired:')
+    console.log('passport callback function:')
     console.log(profile)
 
-    const user = users.findByUsername(profile.id)
-    if (user) { //if users exists already
+    let user = users.findByUsername(profile.id)
+    if (user) { //if users exists
       return done(null, user)
     } else { //if not, save user
-      users.saveUser(profile.id, profile.emails[0].value, profile.displayName)
+      user = users.saveUser(profile.id, profile.emails[0].value, profile.displayName)
       console.log('Users: ', users.users)
       return done(null, user)
     }
@@ -63,7 +64,30 @@ passport.use(
     console.log('passport callback function fired:')
     console.log(profile)
 
-    const user = users.findByUsername(profile.id)
+    let user = users.findByUsername(profile.id)
+    if (user) { //if user exists already
+      return done(null, user)
+    } else { //if not, save user
+      user = users.saveUser(profile.id, profile.emails[0].value, profile.displayName)
+      console.log('Users: ', users.users)
+      return done(null, user)
+    }
+  })
+)
+
+passport.use(
+  new TwitterStrategy({
+    //options for twitter strategy
+    consumerKey: keys.twitter.consumerKey,
+    consumerSecret: keys.twitter.consumerSecret,
+    callbackURL: '/auth/twitter/callback',
+    profileFields: ['id', 'email', 'displayName']
+  }, (token, tokenSecret, profile, done) => {
+    // passport callback function
+    console.log('passport callback function fired:')
+    console.log(profile)
+
+    let user = users.findByUsername(profile.id)
     if (user) { //if user exists already
       return done(null, user)
     } else { //if not, save user
