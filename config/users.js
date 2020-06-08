@@ -20,12 +20,13 @@ const findByUsername = function (username) {
 }
 
 const saveUser = function (username, email, name) {
-  users.push({
+  const user = {
     'username': username,
     'email': email,
     'name': name
-  })
-
+  }
+  users.push(user)
+  return user;
 }
 
 module.exports = {

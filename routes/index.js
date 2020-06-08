@@ -10,6 +10,8 @@ const config = require('../config')
 
 const router = express.Router()
 
+const users = require('../config/users')
+
 router.get('/', (req, res) => {
   res.send(`
         <h1>Welcome to the fortune-teller server!</h1>
@@ -79,6 +81,10 @@ router.get('/auth/google/redirect', passport.authenticate('google'), (req, res) 
   }
 )
 //end AUTH LOGIN WITH GOOGLE
+router.get('/users', (req, res) => {
+  res.send(users)
+})
+
 
 //FACEBOOK LOGIN
 
